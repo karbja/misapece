@@ -15,7 +15,6 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        /* 1. OPRAVA: Barvu pozadí přesouváme na html vrstvu */
         html { 
             scroll-behavior: smooth; 
             background-color: var(--bg-color);
@@ -26,7 +25,6 @@
             color: var(--text-color);
             line-height: 1.6;
             position: relative;
-            /* Z body jsme smazali background-color, aby bylo průhledné a ukázalo animaci pod sebou */
         }
 
         @keyframes floatUp {
@@ -34,16 +32,13 @@
             100% { background-position: 0 -150px; } 
         }
 
-        /* 2. OPRAVA: Hravé emoji pozadí s bezpečně zakódovanými znaky */
         body::before {
             content: "";
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            /* Níže jsou emoji zapsány přes % kódy, což zaručí, že je každý prohlížeč správně vykreslí */
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Ctext x='10' y='30' font-size='25' opacity='0.15'%3E%F0%9F%8E%82%3C/text%3E%3Ctext x='80' y='70' font-size='25' opacity='0.15'%3E%F0%9F%A7%81%3C/text%3E%3Ctext x='20' y='110' font-size='25' opacity='0.15'%3E%F0%9F%8D%A9%3C/text%3E%3Ctext x='100' y='20' font-size='20' opacity='0.15'%3E%F0%9F%8D%B0%3C/text%3E%3Ctext x='110' y='130' font-size='20' opacity='0.15'%3E%F0%9F%8D%AA%3C/text%3E%3C/svg%3E");
             z-index: -1;
             pointer-events: none;
-            /* Rychlost animace je 30 sekund */
             animation: floatUp 30s linear infinite; 
         }
 
@@ -88,7 +83,6 @@
         }
         .btn:hover { background-color: var(--accent-hover); transform: translateY(-3px); }
 
-        /* Lehké podbarvení sekcí, aby text dobře čitelný nad emoji pozadím */
         section { padding: 5rem 10%; background-color: rgba(253, 251, 247, 0.85); }
 
         .about-content {
@@ -115,8 +109,68 @@
             object-fit: cover;
             display: block;
             transition: transform 0.3s;
+            cursor: pointer; 
         }
         .gallery-item img:hover { transform: scale(1.05); }
+
+        /* --- STYLY PRO LIGHTBOX (Zvětšení a šipky) --- */
+        .lightbox {
+            display: none; 
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+        }
+        .lightbox img {
+            max-width: 85%;
+            max-height: 85%;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            animation: zoomIn 0.3s ease; 
+        }
+        @keyframes zoomIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: #fff;
+            font-size: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+            user-select: none;
+        }
+        .close-btn:hover { color: var(--accent-color); }
+
+        .prev-btn, .next-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #fff;
+            font-size: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 15px;
+            transition: color 0.3s, background-color 0.3s;
+            user-select: none;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+        }
+        .prev-btn:hover, .next-btn:hover { 
+            color: var(--accent-color); 
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        .prev-btn { left: 20px; }
+        .next-btn { right: 20px; }
+        /* ------------------------------------------ */
 
         footer {
             background-color: var(--text-color);
@@ -135,6 +189,9 @@
             nav { display: none; }
             header { justify-content: center; }
             .gallery { grid-template-columns: 1fr; }
+            .prev-btn, .next-btn { font-size: 30px; padding: 10px; }
+            .prev-btn { left: 10px; }
+            .next-btn { right: 10px; }
         }
     </style>
 </head>
@@ -193,6 +250,74 @@
         </div>
         <p style="font-size: 0.9rem; margin-top: 3rem; opacity: 0.7;">&copy; 2026 Míša peče - Moje sladká galerie z Náchoda</p>
     </footer>
+
+    <div id="lightbox" class="lightbox">
+        <span class="close-btn">&times;</span>
+        <span class="prev-btn">&#10094;</span>
+        <img id="lightbox-img" src="" alt="Zvětšený dort">
+        <span class="next-btn">&#10095;</span>
+    </div>
+
+    <script>
+        // Spustíme skript až po úplném načtení HTML stránky
+        document.addEventListener('DOMContentLoaded', () => {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+            const closeBtn = document.querySelector('.close-btn');
+            
+            const images = Array.from(document.querySelectorAll('.gallery-item img'));
+            let currentIndex = 0;
+
+            if(images.length === 0) return; // Ochrana proti chybě, pokud by chyběly obrázky
+
+            function showImage(index) {
+                lightboxImg.src = images[index].src;
+                lightboxImg.alt = images[index].alt;
+            }
+
+            images.forEach((img, index) => {
+                img.addEventListener('click', () => {
+                    currentIndex = index;
+                    showImage(currentIndex);
+                    lightbox.style.display = 'flex';
+                });
+            });
+
+            prevBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); 
+                currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1;
+                showImage(currentIndex);
+            });
+
+            nextBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
+                showImage(currentIndex);
+            });
+
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox || e.target === closeBtn) {
+                    lightbox.style.display = 'none';
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (lightbox.style.display === 'flex') {
+                    if (e.key === 'ArrowLeft') {
+                        currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1;
+                        showImage(currentIndex);
+                    } else if (e.key === 'ArrowRight') {
+                        currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
+                        showImage(currentIndex);
+                    } else if (e.key === 'Escape') {
+                        lightbox.style.display = 'none';
+                    }
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
