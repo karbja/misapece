@@ -3,34 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Míša peče | Míšiny dorty a zákusky</title>
+    <title>Míša peče | Moje sladká galerie</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Pacifico&display=swap" rel="stylesheet">
     <style>
-        /* Základní nastavení barev a proměnných */
         :root {
-            --bg-color: #fdfbf7; /* Krémová */
-            --text-color: #3e2723; /* Čokoládově hnědá */
-            --accent-color: #d81b60; /* Malinová */
+            --bg-color: #fdfbf7; 
+            --text-color: #3e2723; 
+            --accent-color: #d81b60; 
             --accent-hover: #ad144d;
         }
 
-        /* Celkový reset a nastavení stránky */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
+        
+        /* 1. OPRAVA: Barvu pozadí přesouváme na html vrstvu */
+        html { 
+            scroll-behavior: smooth; 
+            background-color: var(--bg-color);
+        }
+        
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
+            position: relative;
+            /* Z body jsme smazali background-color, aby bylo průhledné a ukázalo animaci pod sebou */
         }
 
-        /* Typografie */
+        @keyframes floatUp {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 -150px; } 
+        }
+
+        /* 2. OPRAVA: Hravé emoji pozadí s bezpečně zakódovanými znaky */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            /* Níže jsou emoji zapsány přes % kódy, což zaručí, že je každý prohlížeč správně vykreslí */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Ctext x='10' y='30' font-size='25' opacity='0.15'%3E%F0%9F%8E%82%3C/text%3E%3Ctext x='80' y='70' font-size='25' opacity='0.15'%3E%F0%9F%A7%81%3C/text%3E%3Ctext x='20' y='110' font-size='25' opacity='0.15'%3E%F0%9F%8D%A9%3C/text%3E%3Ctext x='100' y='20' font-size='20' opacity='0.15'%3E%F0%9F%8D%B0%3C/text%3E%3Ctext x='110' y='130' font-size='20' opacity='0.15'%3E%F0%9F%8D%AA%3C/text%3E%3C/svg%3E");
+            z-index: -1;
+            pointer-events: none;
+            /* Rychlost animace je 30 sekund */
+            animation: floatUp 30s linear infinite; 
+        }
+
         h1, h2, h3, .logo { font-family: 'Pacifico', cursive; font-weight: normal; }
         h2 { font-size: 2.5rem; text-align: center; margin-bottom: 2rem; color: var(--accent-color); }
         
-        /* Navigace */
         header {
-            background-color: #fff;
+            background-color: rgba(255, 255, 255, 0.95);
             padding: 1rem 5%;
             display: flex;
             justify-content: space-between;
@@ -44,15 +65,14 @@
         nav a { margin-left: 2rem; text-decoration: none; color: var(--text-color); font-weight: 600; transition: color 0.3s; }
         nav a:hover { color: var(--accent-color); }
 
-        /* Úvodní sekce (Hero) */
         .hero {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 6rem 1rem;
-            background: linear-gradient(rgba(253, 251, 247, 0.9), rgba(253, 251, 247, 0.9)), url('IMG_2500.jpg') center/cover;
+            padding: 8rem 1rem;
+            background: linear-gradient(rgba(253, 251, 247, 0.9), rgba(253, 251, 247, 0.9)), url('IMG_2500.jpeg') center/cover;
         }
         .hero h1 { font-size: 4rem; margin-bottom: 1rem; }
         .hero p { font-size: 1.2rem; max-width: 600px; margin-bottom: 2rem; }
@@ -68,10 +88,9 @@
         }
         .btn:hover { background-color: var(--accent-hover); transform: translateY(-3px); }
 
-        /* Obecné nastavení sekcí */
-        section { padding: 5rem 10%; }
+        /* Lehké podbarvení sekcí, aby text dobře čitelný nad emoji pozadím */
+        section { padding: 5rem 10%; background-color: rgba(253, 251, 247, 0.85); }
 
-        /* O Míše */
         .about-content {
             max-width: 800px;
             margin: 0 auto;
@@ -79,7 +98,6 @@
             font-size: 1.1rem;
         }
 
-        /* Portfolio / Galerie */
         .gallery {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -89,6 +107,7 @@
             overflow: hidden;
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            background-color: #fff;
         }
         .gallery-item img {
             width: 100%;
@@ -99,7 +118,6 @@
         }
         .gallery-item img:hover { transform: scale(1.05); }
 
-        /* Kontakt / Patička */
         footer {
             background-color: var(--text-color);
             color: #fff;
@@ -112,11 +130,11 @@
         .contact-info a { color: var(--accent-color); text-decoration: none; font-weight: bold; }
         .contact-info a:hover { color: #fff; }
 
-        /* Responzivita pro mobily */
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.5rem; }
-            nav { display: none; /* Pro jednoduchost skryjeme menu na nejmenších mobilech */ }
+            nav { display: none; }
             header { justify-content: center; }
+            .gallery { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -126,44 +144,54 @@
         <a href="#" class="logo">Míša peče</a>
         <nav>
             <a href="#o-mise">O mně</a>
-            <a href="#dorty">Moje dorty</a>
+            <a href="#dorty">Moje galerie</a>
             <a href="#kontakt">Kontakt</a>
         </nav>
     </header>
 
     <section class="hero">
-        <h1>Peču s láskou a radostí ze života</h1>
-        <p>Originální dorty a zákusky pro každou vaši výjimečnou chvíli. Poctivé suroviny, hravý design a chuť, na kterou nezapomenete.</p>
-        <a href="#dorty" class="btn">Prohlédnout dorty</a>
+        <h1>Vítejte v mé sladké galerii</h1>
+        <p>Pečení je moje vášeň a způsob, jak dělat radost. Prohlédněte si mé výtvory plné poctivých surovin, barev a kreativity.</p>
+        <a href="#dorty" class="btn">Prohlédnout si galerii</a>
     </section>
 
     <section id="o-mise">
         <h2>Kdo jsem?</h2>
         <div class="about-content">
-            <p>Jsem mladá cukrářka z Nového Města nad Metují, která miluje život, barvy a poctivé pečení. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Mým cílem je, aby každý dort nebyl jen dezert, ale zážitek.</p>
+            <p>Jsem Míša z Náchoda a mám ráda kreativní činnosti. Vaření a pečení jsou moje srdeční záležitost – přinášejí mi obrovskou radost a baví mě jimi těšit ostatní. Vidět úsměvy na tváři mých blízkých je pro mě ta největší odměna. Mým velkým snem je mít vlastní zahrádku, kde bych pěstovala čerstvé bylinky, zeleninu a ovoce, které bych pak mohla využívat i ve své sladké tvorbě. Miluji výlety do přírody, obzvlášť do hor, kde je svět nejkrásnější. A když se k tomu přidá něco sladkého, den je prostě dokonalý.</p>
         </div>
     </section>
 
     <section id="dorty">
         <h2>Ukázka mé práce</h2>
         <div class="gallery">
-            <div class="gallery-item"><img src="IMG_2500.jpeg" alt="Dort 60 s ovocem a makronkami"></div>
-            <div class="gallery-item"><img src="IMG_0520.jpg" alt="Pistáciový dort s jahodami 30"></div>
-            <div class="gallery-item"><img src="IMG_0156.jpg" alt="Medový dort s včeličkami 70"></div>
-            <div class="gallery-item"><img src="IMG_2830.jpeg" alt="Dort košík s houbami 80"></div>
-            <div class="gallery-item"><img src="IMG_0747.jpg" alt="Čokoládový dort s notami"></div>
-            <div class="gallery-item"><img src="IMG_0162.jpg" alt="Detail včeliček"></div>
+            <div class="gallery-item"><img src="IMG_6568.jpeg" alt="Míša držící velký dort venku"></div>
+            <div class="gallery-item"><img src="IMG_2500.jpeg" alt="Narozeninový dort '60' s fíky a granátovým jablkem"></div>
+            <div class="gallery-item"><img src="IMG_0520.jpg" alt="Narozeninový dort '30' s pistáciemi a jahodami"></div>
+            <div class="gallery-item"><img src="IMG_0156.jpg" alt="Dort ve tvaru '70' s roztomilými cukrovými včelkami"></div>
+            <div class="gallery-item"><img src="IMG_2830.jpeg" alt="Kreativní narozeninový dort '80' v podobě košíku hub"></div>
+            <div class="gallery-item"><img src="IMG_0747.jpg" alt="Dort s čokoládovými hudebními notami a klíčem"></div>
+            <div class="gallery-item"><img src="IMG_0162.jpg" alt="Detail cukrových včelek na dortu"></div>
+            <div class="gallery-item"><img src="IMG_1982.jpeg" alt="Barevný jednorožčí dort"></div>
+            <div class="gallery-item"><img src="IMG_2562.jpeg" alt="Velké perníkové srdce 'Miluji tě' se sněhovými vločkami"></div>
+            <div class="gallery-item"><img src="IMG_2885.jpeg" alt="Čokoládový dort s ovocem a čokoládovými pralinkami na lince"></div>
+            <div class="gallery-item"><img src="IMG_3476.jpeg" alt="Talíř barevných donutů na trávě"></div>
+            <div class="gallery-item"><img src="IMG_1771.jpeg" alt="Třípatrový čokoládový dort '50' a '30'"></div>
+            <div class="gallery-item"><img src="IMG_7270.jpeg" alt="Elegantní dvoupatrový dort se zelenými listy břečťanu a zlatým číslem '50'"></div>
+            <div class="gallery-item"><img src="IMG_4556.jpeg" alt="Čokoládový dort s malinami, stékanou polevou a bílou čokoládou"></div>
+            <div class="gallery-item"><img src="IMG_7547.jpeg" alt="Čokoládový dort zdobený ovocem a čokoládovými kuličkami '80'"></div>
+            <div class="gallery-item"><img src="IMG_5761.jpeg" alt="Obdélníkový čokoládový dort s malinami"></div>
         </div>
     </section>
 
     <footer id="kontakt">
-        <h2>Máte na něco chuť? Napište mi!</h2>
-        <p>Dorty peču na míru vašim představám. Ozvěte se mi a domluvíme detaily. Osobní předání probíhá v Novém Městě nad Metují a okolí.</p>
+        <h2>Líbí se vám moje tvorba?</h2>
+        <p>Tato stránka slouží jako moje osobní galerie a deník toho, co mě baví. Pokud vás mé pečení zaujalo, chcete si vyměnit tipy, recepty, nebo mi jen nechat milý vzkaz, budu moc ráda, když se mi ozvete!</p>
         <div class="contact-info">
             <p>📧 E-mail: <a href="mailto:kralova.mys@seznam.cz">kralova.mys@seznam.cz</a></p>
             <p>📞 Telefon: <a href="tel:+420605323420">+420 605 323 420</a></p>
         </div>
-        <p style="font-size: 0.9rem; margin-top: 3rem; opacity: 0.7;">&copy; 2024 Míša peče - Míšiny dorty a zákusky</p>
+        <p style="font-size: 0.9rem; margin-top: 3rem; opacity: 0.7;">&copy; 2026 Míša peče - Moje sladká galerie z Náchoda</p>
     </footer>
 
 </body>
