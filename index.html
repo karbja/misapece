@@ -38,30 +38,36 @@
             background-color: var(--bg-color);
         }
 
-        /* Čistá, jednobarevná rolovací lišta */
+        /* --- PRELOADER --- */
+        .preloader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--bg-color);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 999999; transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        .preloader.hidden { opacity: 0; visibility: hidden; }
+        .preloader-icon { font-size: 60px; animation: bounce 0.8s infinite alternate ease-in-out; }
+        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-30px); } }
+        .preloader p { margin-top: 20px; font-family: 'Pacifico', cursive; color: var(--accent-color); font-size: 1.5rem; letter-spacing: 1px; }
+
+        /* Rolovací lišta */
         ::-webkit-scrollbar { width: 12px; }
         ::-webkit-scrollbar-track { background: var(--bg-color); }
         ::-webkit-scrollbar-thumb {
-            background-color: var(--accent-color);
-            border-radius: 6px; 
-            border: 3px solid var(--bg-color);
+            background-color: var(--accent-color); border-radius: 6px; border: 3px solid var(--bg-color);
         }
         ::-webkit-scrollbar-thumb:hover { background-color: var(--accent-hover); }
         
         body {
-            font-family: 'Montserrat', sans-serif;
-            color: var(--text-color);
-            line-height: 1.6;
-            position: relative;
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" style="font-size:24px"><text y="22">🧁</text></svg>'), auto;
+            font-family: 'Montserrat', sans-serif; color: var(--text-color); line-height: 1.6; position: relative;
         }
 
-        a, .btn, .gallery-item img, .close-btn, .prev-btn, .next-btn, .back-to-top {
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" style="font-size:28px"><text y="26">🧁</text></svg>'), pointer !important;
+        /* Kurzor "ručičky" pro všechny klikací prvky */
+        a, .btn, .gallery-item img, .close-btn, .prev-btn, .next-btn, .back-to-top, .close-top-bar {
+            cursor: pointer;
         }
 
         @keyframes floatUp { 0% { background-position: 0 0; } 100% { background-position: 0 -150px; } }
-
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Ctext x='10' y='30' font-size='25' opacity='0.15'%3E%F0%9F%8E%82%3C/text%3E%3Ctext x='80' y='70' font-size='25' opacity='0.15'%3E%F0%9F%A7%81%3C/text%3E%3Ctext x='20' y='110' font-size='25' opacity='0.15'%3E%F0%9F%8D%A9%3C/text%3E%3Ctext x='100' y='20' font-size='20' opacity='0.15'%3E%F0%9F%8D%B0%3C/text%3E%3Ctext x='110' y='130' font-size='20' opacity='0.15'%3E%F0%9F%8D%AA%3C/text%3E%3C/svg%3E");
@@ -74,12 +80,41 @@
         h1, h2, h3, .logo { font-family: 'Pacifico', cursive; font-weight: normal; }
         h2 { font-size: 2.5rem; text-align: center; margin-bottom: 2rem; color: var(--accent-color); }
         
-        header { background-color: rgba(255, 255, 255, 0.95); padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
+        /* --- CHYTRÉ MENU S INFORMAČNÍ LIŠTOU --- */
+        header { 
+            position: fixed; top: 0; left: 0; width: 100%;
+            background-color: transparent; 
+            z-index: 100; transition: all 0.4s ease;
+        }
+        
+        .top-bar {
+            background-color: var(--accent-color);
+            color: #fff; text-align: center; 
+            padding: 10px 40px 10px 15px; /* Více místa vpravo, aby text nezasahoval pod křížek */
+            font-size: 0.9rem; font-weight: 600; position: relative;
+        }
+        .close-top-bar {
+            position: absolute; right: 15px; top: 50%; transform: translateY(-50%); /* Křížek úplně vpravo */
+            font-size: 1.5rem; font-weight: bold; line-height: 1; transition: opacity 0.3s;
+        }
+        .close-top-bar:hover { opacity: 0.7; }
+
+        .header-inner {
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 1.5rem 5%; transition: all 0.4s ease;
+        }
+
+        header.scrolled {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        header.scrolled .header-inner { padding: 0.8rem 5%; }
+        
         .logo { font-size: 1.8rem; color: var(--accent-color); text-decoration: none; }
         nav a { margin-left: 2rem; text-decoration: none; color: var(--text-color); font-weight: 600; transition: color 0.3s; }
         nav a:hover { color: var(--accent-color); }
 
-        .hero { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 8rem 1rem; background: linear-gradient(rgba(253, 251, 247, 0.9), rgba(253, 251, 247, 0.9)), url('IMG_2500.webp') center/cover; }
+        .hero { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 12rem 1rem 8rem 1rem; background: linear-gradient(rgba(253, 251, 247, 0.9), rgba(253, 251, 247, 0.9)), url('IMG_2500.webp') center/cover; }
         .hero h1 { font-size: 4rem; margin-bottom: 1rem; }
         .hero p { font-size: 1.2rem; max-width: 600px; }
 
@@ -112,22 +147,37 @@
         .contact-info a:hover { color: #fff; }
 
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; } nav { display: none; } header { justify-content: center; } .gallery { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2.5rem; } nav { display: none; } 
+            .header-inner { justify-content: center; } 
+            .top-bar { font-size: 0.8rem; padding: 10px 30px 10px 10px; }
+            .close-top-bar { right: 10px; }
+            .gallery { grid-template-columns: 1fr; }
             .prev-btn, .next-btn { font-size: 30px; padding: 10px; } .prev-btn { left: 10px; } .next-btn { right: 10px; }
             .back-to-top { bottom: 20px; right: 20px; width: 50px; height: 50px; font-size: 28px; }
-            body, a, .btn, .gallery-item img, .close-btn, .prev-btn, .next-btn, .back-to-top { cursor: auto !important; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <a href="#" class="logo">Míša peče</a>
-        <nav>
-            <a href="#dorty">Moje galerie</a>
-            <a href="#o-mise">O mně</a>
-            <a href="#kontakt">Kontakt</a>
-        </nav>
+    <div id="preloader" class="preloader">
+        <div class="preloader-icon">🧁</div>
+        <p>Rozpaluji troubu...</p>
+    </div>
+
+    <header id="main-header">
+        <div id="top-bar" class="top-bar">
+            🍩 Akce: Přijímám objednávky na víkendové pečení! Kapacity se plní. 🍰
+            <span class="close-top-bar" id="closeTopBar" title="Zavřít upozornění">&times;</span>
+        </div>
+        
+        <div class="header-inner">
+            <a href="#" class="logo">Míša peče</a>
+            <nav>
+                <a href="#dorty">Moje galerie</a>
+                <a href="#o-mise">O mně</a>
+                <a href="#kontakt">Kontakt</a>
+            </nav>
+        </div>
     </header>
 
     <section class="hero">
@@ -184,9 +234,36 @@
     <div id="backToTop" class="back-to-top" title="Zpět nahoru">🧁</div>
 
     <script>
+        // Skript pro odstranění preloaderu
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            setTimeout(() => { preloader.classList.add('hidden'); }, 500);
+        });
+
+        // SKRIPT PRO INFORMAČNÍ LIŠTU (Zavírání a paměť)
+        const topBar = document.getElementById('top-bar');
+        const closeTopBar = document.getElementById('closeTopBar');
+        
+        if (topBar && closeTopBar) {
+            if (sessionStorage.getItem('topBarClosed') === 'true') {
+                topBar.style.display = 'none';
+            }
+            closeTopBar.addEventListener('click', () => {
+                topBar.style.display = 'none';
+                sessionStorage.setItem('topBarClosed', 'true');
+            });
+        }
+
+        // Chytré menu
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) { header.classList.add('scrolled'); } 
+            else { header.classList.remove('scrolled'); }
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
             
-            // Fade-in animace
+            // Fade-in
             const reveals = document.querySelectorAll('.reveal');
             const revealObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
@@ -196,7 +273,6 @@
                     }
                 });
             }, { rootMargin: "0px", threshold: 0.15 });
-
             reveals.forEach(reveal => revealObserver.observe(reveal));
 
             // Lightbox
@@ -205,7 +281,6 @@
             const prevBtn = document.querySelector('.prev-btn');
             const nextBtn = document.querySelector('.next-btn');
             const closeBtn = document.querySelector('.close-btn');
-            
             const images = Array.from(document.querySelectorAll('.gallery-item img'));
             let currentIndex = 0;
 
@@ -214,7 +289,6 @@
                     lightboxImg.src = images[index].src;
                     lightboxImg.alt = images[index].alt;
                 }
-
                 images.forEach((img, index) => {
                     img.addEventListener('click', () => {
                         currentIndex = index;
@@ -222,23 +296,19 @@
                         lightbox.style.display = 'flex';
                     });
                 });
-
                 prevBtn.addEventListener('click', (e) => {
                     e.stopPropagation(); 
                     currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1;
                     showImage(currentIndex);
                 });
-
                 nextBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
                     showImage(currentIndex);
                 });
-
                 lightbox.addEventListener('click', (e) => {
                     if (e.target === lightbox || e.target === closeBtn) lightbox.style.display = 'none';
                 });
-
                 document.addEventListener('keydown', (e) => {
                     if (lightbox.style.display === 'flex') {
                         if (e.key === 'ArrowLeft') { currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1; showImage(currentIndex); } 
@@ -248,28 +318,19 @@
                 });
             }
 
-            // Tlačítko Cupcake s bezstarostným IntersectionObserver
+            // Tlačítko Cupcake nahoru
             const backToTopBtn = document.getElementById('backToTop');
             const heroSection = document.querySelector('.hero');
-            
             if (heroSection) {
                 const heroObserver = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
-                        if (!entry.isIntersecting) {
-                            backToTopBtn.classList.add('show');
-                        } else {
-                            backToTopBtn.classList.remove('show');
-                        }
+                        if (!entry.isIntersecting) { backToTopBtn.classList.add('show'); } 
+                        else { backToTopBtn.classList.remove('show'); }
                     });
                 }, { threshold: 0 });
-
                 heroObserver.observe(heroSection);
             }
-
-            backToTopBtn.addEventListener('click', () => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-
+            backToTopBtn.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
         });
     </script>
 </body>
