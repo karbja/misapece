@@ -60,9 +60,36 @@
         header.scrolled { background-color: rgba(255, 255, 255, 0.95); box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         header.scrolled .header-inner { padding: 0.8rem 5%; }
         
-        .logo { font-size: 1.8rem; color: var(--accent-color); text-decoration: none; }
-        nav a { margin-left: 2rem; text-decoration: none; color: var(--text-color); font-weight: 600; transition: color 0.3s; }
-        nav a:hover { color: var(--accent-color); }
+        .logo { 
+    font-size: 1.8rem; 
+    color: var(--accent-color); 
+    text-decoration: none; 
+    display: inline-flex;
+    align-items: center;
+    gap: 10px; /* Mezera mezi dortíkem a textem */
+    position: relative; /* Nutné pro vlastní podtržení */
+}
+
+/* Elegantní malinové podtržení */
+.logo::after {
+    content: '';
+    position: absolute;
+    bottom: -5px; /* Vzdálenost od textu */
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--accent-color);
+    border-radius: 2px;
+    transform: scaleX(0); /* Ze začátku skryté */
+    transition: transform 0.3s ease; /* Plynulá animace */
+    transform-origin: bottom right;
+}
+
+/* Animace podtržení při najetí myší */
+.logo:hover::after {
+    transform: scaleX(1); /* Zobrazí se */
+    transform-origin: bottom left;
+}
 
         /* HERO */
         .hero { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 12rem 1rem 8rem 1rem; background: linear-gradient(rgba(253, 251, 247, 0.9), rgba(253, 251, 247, 0.9)), url('IMG_2500.webp') center/cover; background-attachment: fixed; }
@@ -139,7 +166,7 @@
             <span class="close-top-bar" id="closeTopBar" title="Zavřít upozornění">&times;</span>
         </div>
         <div class="header-inner">
-            <a href="#" class="logo">Míša peče</a>
+            <a href="/" class="logo">🎂 Míša peče</a>
             <nav>
                 <a href="#dorty">Moje galerie</a>
                 <a href="#o-mise">O mně</a>
