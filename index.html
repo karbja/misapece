@@ -7,13 +7,15 @@
     
     <meta property="og:title" content="Míša peče | Moje sladká galerie">
     <meta property="og:description" content="Pečení je moje vášeň a způsob, jak dělat radost. Prohlédněte si mé výtvory plné poctivých surovin, barev a kreativity.">
-    <meta property="og:image" content="IMG_2500.jpeg">
+    <meta property="og:image" content="IMG_2500.webp">
     <meta property="og:type" content="website">
 
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧁</text></svg>">
     
-    <link rel="preload" as="image" href="IMG_2500.jpeg">
+    <link rel="preload" as="image" href="IMG_2500.webp">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Pacifico&display=swap" rel="stylesheet">
     
     <style>
@@ -31,222 +33,73 @@
             background-color: var(--bg-color);
         }
 
-        /* Vlastní rolovací lišta - Efekt vroubkované cukrářské špičky */
-        ::-webkit-scrollbar {
-            width: 14px; 
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg-color);
-        }
+        /* Čistá, jednobarevná rolovací lišta */
+        ::-webkit-scrollbar { width: 12px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
         ::-webkit-scrollbar-thumb {
             background-color: var(--accent-color);
-            background-image: repeating-linear-gradient(
-                to bottom,
-                transparent,
-                transparent 6px,
-                rgba(255, 255, 255, 0.25) 6px,
-                rgba(255, 255, 255, 0.25) 12px
-            );
-            border-radius: 7px;
+            border-radius: 6px; 
             border: 3px solid var(--bg-color);
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background-color: var(--accent-hover);
-        }
+        ::-webkit-scrollbar-thumb:hover { background-color: var(--accent-hover); }
         
-        /* Cukrářský VLASTNÍ KURZOR pro celý web */
         body {
             font-family: 'Montserrat', sans-serif;
             color: var(--text-color);
             line-height: 1.6;
             position: relative;
-            /* Základní kurzor - cupcake */
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" style="font-size:24px"><text y="22">🧁</text></svg>'), auto;
         }
 
-        /* Zvětšený cupcake pro klikací elementy */
         a, .btn, .gallery-item img, .close-btn, .prev-btn, .next-btn, .back-to-top {
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" style="font-size:28px"><text y="26">🧁</text></svg>'), pointer !important;
         }
 
-        /* Plující emoji pozadí */
-        @keyframes floatUp {
-            0% { background-position: 0 0; }
-            100% { background-position: 0 -150px; } 
-        }
+        @keyframes floatUp { 0% { background-position: 0 0; } 100% { background-position: 0 -150px; } }
 
         body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Ctext x='10' y='30' font-size='25' opacity='0.15'%3E%F0%9F%8E%82%3C/text%3E%3Ctext x='80' y='70' font-size='25' opacity='0.15'%3E%F0%9F%A7%81%3C/text%3E%3Ctext x='20' y='110' font-size='25' opacity='0.15'%3E%F0%9F%8D%A9%3C/text%3E%3Ctext x='100' y='20' font-size='20' opacity='0.15'%3E%F0%9F%8D%B0%3C/text%3E%3Ctext x='110' y='130' font-size='20' opacity='0.15'%3E%F0%9F%8D%AA%3C/text%3E%3C/svg%3E");
-            z-index: -1;
-            pointer-events: none;
-            animation: floatUp 30s linear infinite; 
+            z-index: -1; pointer-events: none; animation: floatUp 30s linear infinite; 
         }
 
-        /* Styly pro Fade-in animace při rolování */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
 
         h1, h2, h3, .logo { font-family: 'Pacifico', cursive; font-weight: normal; }
         h2 { font-size: 2.5rem; text-align: center; margin-bottom: 2rem; color: var(--accent-color); }
         
-        header {
-            background-color: rgba(255, 255, 255, 0.95);
-            padding: 1rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+        header { background-color: rgba(255, 255, 255, 0.95); padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
         .logo { font-size: 1.8rem; color: var(--accent-color); text-decoration: none; }
         nav a { margin-left: 2rem; text-decoration: none; color: var(--text-color); font-weight: 600; transition: color 0.3s; }
         nav a:hover { color: var(--accent-color); }
 
-        .hero {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 8rem 1rem;
-            background: linear-gradient(rgba(253, 251, 247, 0.9), rgba(253, 251, 247, 0.9)), url('IMG_2500.jpeg') center/cover;
-        }
+        .hero { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 8rem 1rem; background: linear-gradient(rgba(253, 251, 247, 0.9), rgba(253, 251, 247, 0.9)), url('IMG_2500.webp') center/cover; }
         .hero h1 { font-size: 4rem; margin-bottom: 1rem; }
         .hero p { font-size: 1.2rem; max-width: 600px; }
 
         section { padding: 5rem 10%; background-color: rgba(253, 251, 247, 0.85); }
+        .about-content { max-width: 800px; margin: 0 auto; text-align: center; font-size: 1.1rem; }
 
-        .about-content {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-            font-size: 1.1rem;
-        }
-
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-        .gallery-item {
-            overflow: hidden;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            background-color: #fff;
-        }
-        .gallery-item img {
-            width: 100%;
-            height: 350px;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.3s;
-        }
+        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        .gallery-item { overflow: hidden; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); background-color: #fff; }
+        .gallery-item img { width: 100%; height: 350px; object-fit: cover; display: block; transition: transform 0.3s; }
         .gallery-item img:hover { transform: scale(1.05); }
 
-        /* Styly pro Lightbox */
-        .lightbox {
-            display: none; 
-            position: fixed;
-            z-index: 9999;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            justify-content: center;
-            align-items: center;
-        }
-        .lightbox img {
-            max-width: 85%;
-            max-height: 85%;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            animation: zoomIn 0.3s ease; 
-        }
-        @keyframes zoomIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-        .close-btn {
-            position: absolute;
-            top: 20px;
-            right: 40px;
-            color: #fff;
-            font-size: 50px;
-            font-weight: bold;
-            transition: color 0.3s;
-            user-select: none;
-        }
+        .lightbox { display: none; position: fixed; z-index: 9999; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.9); justify-content: center; align-items: center; }
+        .lightbox img { max-width: 85%; max-height: 85%; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.5); animation: zoomIn 0.3s ease; }
+        @keyframes zoomIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .close-btn { position: absolute; top: 20px; right: 40px; color: #fff; font-size: 50px; font-weight: bold; transition: color 0.3s; user-select: none; }
         .close-btn:hover { color: var(--accent-color); }
+        .prev-btn, .next-btn { position: absolute; top: 50%; transform: translateY(-50%); color: #fff; font-size: 50px; font-weight: bold; padding: 15px; transition: color 0.3s, background-color 0.3s; user-select: none; background-color: rgba(0, 0, 0, 0.3); border-radius: 5px; }
+        .prev-btn:hover, .next-btn:hover { color: var(--accent-color); background-color: rgba(0, 0, 0, 0.8); }
+        .prev-btn { left: 20px; } .next-btn { right: 20px; }
 
-        .prev-btn, .next-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #fff;
-            font-size: 50px;
-            font-weight: bold;
-            padding: 15px;
-            transition: color 0.3s, background-color 0.3s;
-            user-select: none;
-            background-color: rgba(0, 0, 0, 0.3);
-            border-radius: 5px;
-        }
-        .prev-btn:hover, .next-btn:hover { 
-            color: var(--accent-color); 
-            background-color: rgba(0, 0, 0, 0.8);
-        }
-        .prev-btn { left: 20px; }
-        .next-btn { right: 20px; }
+        .back-to-top { position: fixed; bottom: 30px; right: 30px; font-size: 35px; background-color: #fff; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.15); z-index: 1000; opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.3s ease; }
+        .back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
+        .back-to-top:hover { transform: translateY(-5px); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
 
-        /* Tlačítko Zpět nahoru (Cupcake) */
-        .back-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            font-size: 35px;
-            background-color: #fff;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(20px);
-            transition: all 0.3s ease;
-        }
-        .back-to-top.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-        .back-to-top:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-        }
-
-        footer {
-            background-color: var(--text-color);
-            color: #fff;
-            text-align: center;
-            padding: 4rem 10%;
-        }
+        footer { background-color: var(--text-color); color: #fff; text-align: center; padding: 4rem 10%; }
         footer h2 { color: #fff; }
         .contact-info { margin: 2rem 0; font-size: 1.2rem; }
         .contact-info p { margin-bottom: 0.5rem; }
@@ -254,18 +107,10 @@
         .contact-info a:hover { color: #fff; }
 
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            nav { display: none; }
-            header { justify-content: center; }
-            .gallery { grid-template-columns: 1fr; }
-            .prev-btn, .next-btn { font-size: 30px; padding: 10px; }
-            .prev-btn { left: 10px; }
-            .next-btn { right: 10px; }
+            .hero h1 { font-size: 2.5rem; } nav { display: none; } header { justify-content: center; } .gallery { grid-template-columns: 1fr; }
+            .prev-btn, .next-btn { font-size: 30px; padding: 10px; } .prev-btn { left: 10px; } .next-btn { right: 10px; }
             .back-to-top { bottom: 20px; right: 20px; width: 50px; height: 50px; font-size: 28px; }
-            /* Na telefonech vypneme custom kurzor, protože dotykové displeje ho nevyužijí */
-            body, a, .btn, .gallery-item img, .close-btn, .prev-btn, .next-btn, .back-to-top {
-                cursor: auto !important;
-            }
+            body, a, .btn, .gallery-item img, .close-btn, .prev-btn, .next-btn, .back-to-top { cursor: auto !important; }
         }
     </style>
 </head>
@@ -288,22 +133,22 @@
     <section id="dorty">
         <h2 class="reveal">Ukázka mé práce</h2>
         <div class="gallery">
-            <div class="gallery-item reveal"><img src="IMG_6568.jpeg" alt="Míša držící velký dort venku" loading="lazy"></div>
-            <div class="gallery-item reveal"><img src="IMG_2500.jpeg" alt="Narozeninový dort '60' s fíky a granátovým jablkem" loading="lazy"></div>
-            <div class="gallery-item reveal"><img src="IMG_0520.jpg" alt="Narozeninový dort '30' s pistáciemi a jahodami" loading="lazy"></div>
-            <div class="gallery-item reveal"><img src="IMG_0156.jpg" alt="Dort ve tvaru '70' s roztomilými cukrovými včelkami" loading="lazy"></div>
-            <div class="gallery-item reveal"><img src="IMG_2830.jpeg" alt="Kreativní narozeninový dort '80' v podobě košíku hub" loading="lazy"></div>
-            <div class="gallery-item reveal"><img src="IMG_0747.jpg" alt="Dort s čokoládovými hudebními notami a klíčem" loading="lazy"></div>
-            <div class="gallery-item reveal"><img src="IMG_0162.jpg" alt="Detail cukrových včelek na dortu" loading="lazy"></div>
-            <div class="gallery-item reveal"><img src="IMG_1982.jpeg" alt="Barevný jednorožčí dort" loading="lazy"></div>
-            <div class="gallery-item reveal"><img src="IMG_2562.jpeg" alt="Velké perníkové srdce 'Miluji tě' se sněhovými vločkami" loading="lazy"></div>
-            <div class="gallery-item reveal"><img src="IMG_2885.jpeg" alt="Čokoládový dort s ovocem a čokoládovými pralinkami na lince" loading="lazy"></div>
-            <div class="gallery-item reveal"><img src="IMG_3476.jpeg" alt="Talíř barevných donutů na trávě" loading="lazy"></div>
-            <div class="gallery-item reveal"><img src="IMG_1771.jpeg" alt="Třípatrový čokoládový dort '50' a '30'" loading="lazy"></div>
-            <div class="gallery-item reveal"><img src="IMG_7270.jpeg" alt="Elegantní dvoupatrový dort se zelenými listy břečťanu a zlatým číslem '50'" loading="lazy"></div>
-            <div class="gallery-item reveal"><img src="IMG_4556.jpeg" alt="Čokoládový dort s malinami, stékanou polevou a bílou čokoládou" loading="lazy"></div>
-            <div class="gallery-item reveal"><img src="IMG_7547.jpeg" alt="Čokoládový dort zdobený ovocem a čokoládovými kuličkami '80'" loading="lazy"></div>
-            <div class="gallery-item reveal"><img src="IMG_5761.jpeg" alt="Obdélníkový čokoládový dort s malinami" loading="lazy"></div>
+            <div class="gallery-item reveal"><img src="IMG_6568.webp" alt="Míša držící velký dort venku" loading="lazy"></div>
+            <div class="gallery-item reveal"><img src="IMG_2500.webp" alt="Narozeninový dort '60' s fíky a granátovým jablkem" loading="lazy"></div>
+            <div class="gallery-item reveal"><img src="IMG_0520.webp" alt="Narozeninový dort '30' s pistáciemi a jahodami" loading="lazy"></div>
+            <div class="gallery-item reveal"><img src="IMG_0156.webp" alt="Dort ve tvaru '70' s roztomilými cukrovými včelkami" loading="lazy"></div>
+            <div class="gallery-item reveal"><img src="IMG_2830.webp" alt="Kreativní narozeninový dort '80' v podobě košíku hub" loading="lazy"></div>
+            <div class="gallery-item reveal"><img src="IMG_0747.webp" alt="Dort s čokoládovými hudebními notami a klíčem" loading="lazy"></div>
+            <div class="gallery-item reveal"><img src="IMG_0162.webp" alt="Detail cukrových včelek na dortu" loading="lazy"></div>
+            <div class="gallery-item reveal"><img src="IMG_1982.webp" alt="Barevný jednorožčí dort" loading="lazy"></div>
+            <div class="gallery-item reveal"><img src="IMG_2562.webp" alt="Velké perníkové srdce 'Miluji tě' se sněhovými vločkami" loading="lazy"></div>
+            <div class="gallery-item reveal"><img src="IMG_2885.webp" alt="Čokoládový dort s ovocem a čokoládovými pralinkami na lince" loading="lazy"></div>
+            <div class="gallery-item reveal"><img src="IMG_3476.webp" alt="Talíř barevných donutů na trávě" loading="lazy"></div>
+            <div class="gallery-item reveal"><img src="IMG_1771.webp" alt="Třípatrový čokoládový dort '50' a '30'" loading="lazy"></div>
+            <div class="gallery-item reveal"><img src="IMG_7270.webp" alt="Elegantní dvoupatrový dort se zelenými listy břečťanu a zlatým číslem '50'" loading="lazy"></div>
+            <div class="gallery-item reveal"><img src="IMG_4556.webp" alt="Čokoládový dort s malinami, stékanou polevou a bílou čokoládou" loading="lazy"></div>
+            <div class="gallery-item reveal"><img src="IMG_7547.webp" alt="Čokoládový dort zdobený ovocem a čokoládovými kuličkami '80'" loading="lazy"></div>
+            <div class="gallery-item reveal"><img src="IMG_5761.webp" alt="Obdélníkový čokoládový dort s malinami" loading="lazy"></div>
         </div>
     </section>
 
@@ -336,9 +181,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
-            /* --- SCRIPT PRO FADE-IN ANIMACE --- */
+            // Fade-in animace
             const reveals = document.querySelectorAll('.reveal');
-            
             const revealObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -346,16 +190,11 @@
                         observer.unobserve(entry.target); 
                     }
                 });
-            }, {
-                rootMargin: "0px",
-                threshold: 0.15 
-            });
+            }, { rootMargin: "0px", threshold: 0.15 });
 
-            reveals.forEach(reveal => {
-                revealObserver.observe(reveal);
-            });
+            reveals.forEach(reveal => revealObserver.observe(reveal));
 
-            /* --- SCRIPT PRO LIGHTBOX --- */
+            // Lightbox
             const lightbox = document.getElementById('lightbox');
             const lightboxImg = document.getElementById('lightbox-img');
             const prevBtn = document.querySelector('.prev-btn');
@@ -392,46 +231,41 @@
                 });
 
                 lightbox.addEventListener('click', (e) => {
-                    if (e.target === lightbox || e.target === closeBtn) {
-                        lightbox.style.display = 'none';
-                    }
+                    if (e.target === lightbox || e.target === closeBtn) lightbox.style.display = 'none';
                 });
 
                 document.addEventListener('keydown', (e) => {
                     if (lightbox.style.display === 'flex') {
-                        if (e.key === 'ArrowLeft') {
-                            currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1;
-                            showImage(currentIndex);
-                        } else if (e.key === 'ArrowRight') {
-                            currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
-                            showImage(currentIndex);
-                        } else if (e.key === 'Escape') {
-                            lightbox.style.display = 'none';
-                        }
+                        if (e.key === 'ArrowLeft') { currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1; showImage(currentIndex); } 
+                        else if (e.key === 'ArrowRight') { currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0; showImage(currentIndex); } 
+                        else if (e.key === 'Escape') lightbox.style.display = 'none';
                     }
                 });
             }
 
-            /* --- SCRIPT PRO CUPCAKE TLAČÍTKO NAHORU --- */
+            // Tlačítko Cupcake s IntersectionObserver
             const backToTopBtn = document.getElementById('backToTop');
+            const heroSection = document.querySelector('.hero');
             
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 400) {
-                    backToTopBtn.classList.add('show');
-                } else {
-                    backToTopBtn.classList.remove('show');
-                }
-            });
+            if (heroSection) {
+                const heroObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (!entry.isIntersecting) {
+                            backToTopBtn.classList.add('show');
+                        } else {
+                            backToTopBtn.classList.remove('show');
+                        }
+                    });
+                }, { threshold: 0 });
+
+                heroObserver.observe(heroSection);
+            }
 
             backToTopBtn.addEventListener('click', () => {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             });
 
         });
     </script>
-
 </body>
 </html>
