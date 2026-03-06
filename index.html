@@ -31,27 +31,42 @@
             background-color: var(--bg-color);
         }
 
-        /* 3. Vlastní malinová rolovací lišta (Custom Scrollbar) */
+        /* Vlastní rolovací lišta - Efekt vroubkované cukrářské špičky */
         ::-webkit-scrollbar {
-            width: 12px;
+            width: 14px; 
         }
         ::-webkit-scrollbar-track {
             background: var(--bg-color);
         }
         ::-webkit-scrollbar-thumb {
             background-color: var(--accent-color);
-            border-radius: 6px;
+            background-image: repeating-linear-gradient(
+                to bottom,
+                transparent,
+                transparent 6px,
+                rgba(255, 255, 255, 0.25) 6px,
+                rgba(255, 255, 255, 0.25) 12px
+            );
+            border-radius: 7px;
             border: 3px solid var(--bg-color);
         }
         ::-webkit-scrollbar-thumb:hover {
             background-color: var(--accent-hover);
         }
         
+        /* Cukrářský VLASTNÍ KURZOR pro celý web */
         body {
             font-family: 'Montserrat', sans-serif;
             color: var(--text-color);
             line-height: 1.6;
             position: relative;
+            /* Základní kurzor - cupcake */
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" style="font-size:24px"><text y="22">🧁</text></svg>'), auto;
+        }
+
+        /* Zvětšený cupcake pro klikací elementy */
+        a, .btn, .gallery-item img, .close-btn, .prev-btn, .next-btn, .back-to-top {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" style="font-size:28px"><text y="26">🧁</text></svg>'), pointer !important;
         }
 
         /* Plující emoji pozadí */
@@ -137,7 +152,6 @@
             object-fit: cover;
             display: block;
             transition: transform 0.3s;
-            cursor: pointer; 
         }
         .gallery-item img:hover { transform: scale(1.05); }
 
@@ -172,7 +186,6 @@
             color: #fff;
             font-size: 50px;
             font-weight: bold;
-            cursor: pointer;
             transition: color 0.3s;
             user-select: none;
         }
@@ -185,7 +198,6 @@
             color: #fff;
             font-size: 50px;
             font-weight: bold;
-            cursor: pointer;
             padding: 15px;
             transition: color 0.3s, background-color 0.3s;
             user-select: none;
@@ -199,7 +211,7 @@
         .prev-btn { left: 20px; }
         .next-btn { right: 20px; }
 
-        /* 2. Tlačítko Zpět nahoru (Cupcake) */
+        /* Tlačítko Zpět nahoru (Cupcake) */
         .back-to-top {
             position: fixed;
             bottom: 30px;
@@ -213,7 +225,6 @@
             justify-content: center;
             align-items: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            cursor: pointer;
             z-index: 1000;
             opacity: 0;
             visibility: hidden;
@@ -250,8 +261,11 @@
             .prev-btn, .next-btn { font-size: 30px; padding: 10px; }
             .prev-btn { left: 10px; }
             .next-btn { right: 10px; }
-            /* Zmenšení a posunutí tlačítka nahoru na mobilu */
             .back-to-top { bottom: 20px; right: 20px; width: 50px; height: 50px; font-size: 28px; }
+            /* Na telefonech vypneme custom kurzor, protože dotykové displeje ho nevyužijí */
+            body, a, .btn, .gallery-item img, .close-btn, .prev-btn, .next-btn, .back-to-top {
+                cursor: auto !important;
+            }
         }
     </style>
 </head>
@@ -401,7 +415,6 @@
             /* --- SCRIPT PRO CUPCAKE TLAČÍTKO NAHORU --- */
             const backToTopBtn = document.getElementById('backToTop');
             
-            // Zobrazí tlačítko po odskrolování o 400px dolů
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 400) {
                     backToTopBtn.classList.add('show');
@@ -410,7 +423,6 @@
                 }
             });
 
-            // Kliknutím vyveze nahoru
             backToTopBtn.addEventListener('click', () => {
                 window.scrollTo({
                     top: 0,
